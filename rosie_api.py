@@ -5,14 +5,16 @@ import torch
 import torchaudio
 import tempfile
 import os
-import uvicorn
 
 app = FastAPI()
 device = "cpu"
 
+# 🔐 Use your Hugging Face token from environment
+hf_token = os.getenv("HUGGINGFACE_TOKEN")
+
 print("🔌 Loading model and processor...")
-model = CsmForConditionalGeneration.from_pretrained("sesame/csm-1b")
-processor = AutoProcessor.from_pretrained("sesame/csm-1b")
+model = CsmForConditionalGeneration.from_pretrained("sesame/csm-1b", token=hf_token)
+processor = AutoProcessor.from_pretrained("sesame/csm-1b", token=hf_token)
 
 @app.post("/speak")
 async def speak(req: Request):
@@ -27,8 +29,3 @@ async def speak(req: Request):
     tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
     torchaudio.save(tmp_file.name, audio_tensor, 24000, format="wav")
     return FileResponse(tmp_file.name, media_type="audio/wav")
-
-# 👇 This block is needed so Render knows what to run
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    uvicorn.run("rosie_api:app", host="0.0.0.0", port=port)
