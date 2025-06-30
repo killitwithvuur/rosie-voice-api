@@ -4,3 +4,4 @@ requests
 fastapi
 transformers
 torch
+torchaudio
