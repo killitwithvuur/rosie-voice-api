@@ -1,18 +1,20 @@
+import os
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse
 from transformers import CsmForConditionalGeneration, AutoProcessor
 import torch
 import torchaudio
 import tempfile
-import os
 
 app = FastAPI()
 device = "cpu"
 
-# 🔐 Use your Hugging Face token from environment
-hf_token = os.getenv("HUGGINGFACE_TOKEN")
+# 💡 Load HF token from environment
+hf_token = os.environ.get("HUGGINGFACE_TOKEN")
+if not hf_token:
+    raise RuntimeError("HUGGINGFACE_TOKEN not set in environment!")
 
-print("🔌 Loading model and processor...")
+print("🔌 Loading model and processor with token...")
 model = CsmForConditionalGeneration.from_pretrained("sesame/csm-1b", token=hf_token)
 processor = AutoProcessor.from_pretrained("sesame/csm-1b", token=hf_token)
 
