@@ -38,4 +38,4 @@ async def speak(req: Request):
 # 👇 This is what actually launches the server on Render
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("rosie_api:app", host="0.0.0.0", port=8080)
+    uvicorn.run("rosie_api:app", host="0.0.0.0", port=8080, reload=True)
