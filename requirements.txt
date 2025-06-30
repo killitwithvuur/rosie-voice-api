@@ -6,3 +6,4 @@ transformers
 torch
 torchaudio
 uvicorn
+python-dotenv
