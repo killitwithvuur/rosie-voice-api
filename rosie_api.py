@@ -4,6 +4,8 @@ from transformers import CsmForConditionalGeneration, AutoProcessor
 import torch
 import torchaudio
 import tempfile
+import os
+import uvicorn
 
 app = FastAPI()
 device = "cpu"
@@ -25,3 +27,8 @@ async def speak(req: Request):
     tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
     torchaudio.save(tmp_file.name, audio_tensor, 24000, format="wav")
     return FileResponse(tmp_file.name, media_type="audio/wav")
+
+# 👇 This block is needed so Render knows what to run
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
+    uvicorn.run("rosie_api:app", host="0.0.0.0", port=port)

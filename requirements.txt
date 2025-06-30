@@ -5,3 +5,4 @@ fastapi
 transformers
 torch
 torchaudio
+uvicorn
