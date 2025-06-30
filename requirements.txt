@@ -3,3 +3,4 @@ openai
 requests
 fastapi
 transformers
+torch
